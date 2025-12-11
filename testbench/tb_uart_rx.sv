@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-`include "uart_rx.v"
+`include "../design/uart_rx.v"
 
 module tb_uart_rx;
 	reg clk;    // Clock
@@ -173,7 +173,67 @@ module tb_uart_rx;
     	join
     	
     	#1000;
-    	$display("ALL TEST FINISHED");
+
+    	// =========== Test 2 ===========
+    	$display("\n--- Test 2: 8E1 (Data 0x03 - Parity OK) ---");
+
+    	fork
+    		// Thread 1
+    		begin
+		    	// Send data
+		    	uart_send_frame(8'h03, 2'b11, 1, 0, 0, 0);
+		    end
+
+		    // Thread 2
+		    begin
+		    	wait(o_rx_done);
+		    	if(o_data == 8'h03 && o_parity_err == 0) begin
+		    		$display("[PASS] Received 0x03 with Valid Parity.");
+		    	end else begin
+		    		$display("[FAIL] Parity Check Failed!");
+		    	end
+		    end
+		join
+
+		#1000;
+
+		// =========== Test 3 ===========
+		$display("\n--- TEST 3: 8E1 (Data 0x03 - Inject Error) ---");
+		fork
+			begin
+				uart_send_frame(8'h03, 2'b11, 1, 0, 1, 0);
+			end
+
+			begin
+				wait(o_rx_done);
+				if(o_parity_err == 1) begin
+					$display("[PASS] Error Detected correctly!");
+				end else begin
+					$display("[FAIL] DUT failed to detect Parity Error!");
+				end
+			end
+		join
+
+		#1000;
+		// --- TEST 4: 5-bit Data ---
+        $display("\n--- TEST 4: 5-bit Data (Data 0x1F) ---");
+        fork
+        	begin
+        		uart_send_frame(8'h1F, 2'b00, 0, 0, 0, 0);
+        	end
+        	
+        	begin
+		        wait(o_rx_done);
+		        // Với 5 bit, các bit cao [7:5] phải bằng 0
+		        if (o_data === 8'h1F) 
+		            $display("[PASS] Received 5-bit data correctly.");
+		        else 
+		            $display("[FAIL] Expected 0x1F, Got 0x%h", o_data);
+		    end
+		join
+
+    	#1000;
+    	$display("\n================ TEST COMPLETED ================");
     	$finish;
     	
     end
