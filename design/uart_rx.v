@@ -13,7 +13,6 @@ module uart_rx (
     input  wire       rst_n,
     input  wire       rx_tick,        
     input  wire [1:0] i_num_bit_data,
-    input  wire       i_stop_bit,
     input  wire       i_parity_en,
     input  wire       i_parity_type,
     input  wire       i_rx_serial,
