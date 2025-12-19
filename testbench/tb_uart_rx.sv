@@ -194,7 +194,7 @@ module tb_uart_rx;
     // 6. MAIN PROGRAM
     // =========================================================================
     initial begin
-        $dumpfile("uart_rx.vcd");
+        $dumpfile("waveform/uart_rx.vcd");
         $dumpvars(0, tb_uart_rx);
 
         rst_n = 0; i_rx_serial = 1; i_num_bit_data = 3; 

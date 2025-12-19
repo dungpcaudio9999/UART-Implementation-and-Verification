@@ -285,7 +285,7 @@ module tb_uart_tx;
 
     // gtkwave
     initial begin
-        $dumpfile("uart_tx.vcd");
+        $dumpfile("waveform/uart_tx.vcd");
         $dumpvars(0, tb_uart_tx);
     end
 

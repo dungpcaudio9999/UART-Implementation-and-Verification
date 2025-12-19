@@ -189,7 +189,7 @@ module tb_baud_gen;
 	end
 
 	initial begin
-        $dumpfile("baud_gen.vcd");
+        $dumpfile("waveform/baud_gen.vcd");
         $dumpvars(0, tb_baud_gen);
     end
 

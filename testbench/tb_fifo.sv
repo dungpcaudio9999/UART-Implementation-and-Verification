@@ -252,7 +252,7 @@ module tb_fifo;
 
     // Dump sóng
     initial begin
-        $dumpfile("fifo.vcd");
+        $dumpfile("waveform/fifo.vcd");
         $dumpvars(0, tb_fifo);
     end
 endmodule

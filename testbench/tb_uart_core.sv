@@ -201,7 +201,7 @@ module tb_uart_core;
 
     initial begin
         // Setup waveforms
-        $dumpfile("uart_dump.vcd");
+        $dumpfile("waveform/uart_core.vcd");
         $dumpvars(0, tb_uart_core);
 
         $display("----------------------------------------------------------------");
